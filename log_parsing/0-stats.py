@@ -26,19 +26,18 @@ def main():
         for line in sys.stdin:
             line = line.strip()
             match = pattern.match(line)
-            if not match:
-                continue
-            try:
-                status = int(match.group(1))
-                size = int(match.group(2))
-            except (ValueError, IndexError):
-                continue
-            total_size += size
-            if status in status_codes:
-                status_codes[status] += 1
-            line_count += 1
-            if line_count % 10 == 0:
-                print_stats(total_size, status_codes)
+            if match:
+                try:
+                    status = int(match.group(1))
+                    size = int(match.group(2))
+                    total_size += size
+                    if status in status_codes:
+                        status_codes[status] += 1
+                    line_count += 1
+                    if line_count % 10 == 0:
+                        print_stats(total_size, status_codes)
+                except (ValueError, IndexError):
+                    continue
     except KeyboardInterrupt:
         print_stats(total_size, status_codes)
         raise
