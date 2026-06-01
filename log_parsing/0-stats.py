@@ -31,10 +31,8 @@ def main():
                     total_size += int(parts[-1])
                 except ValueError:
                     pass
-            match = pattern.match(line)
-            if match:
                 try:
-                    status = int(match.group(1))
+                    status = int(parts[-2])
                     if status in status_codes:
                         status_codes[status] += 1
                 except ValueError:
