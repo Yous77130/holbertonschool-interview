@@ -1,7 +1,6 @@
 #!/usr/bin/python3
 """Script that reads stdin line by line and computes metrics."""
 import sys
-import re
 
 
 def print_stats(total_size, status_codes):
@@ -39,6 +38,7 @@ def main():
     except KeyboardInterrupt:
         print_stats(total_size, status_codes)
         raise
+    print_stats(total_size, status_codes)
 
 
 if __name__ == "__main__":
