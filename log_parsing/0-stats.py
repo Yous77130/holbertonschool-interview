@@ -25,17 +25,20 @@ def main():
     try:
         for line in sys.stdin:
             line = line.strip()
+            parts = line.split()
+            if len(parts) >= 2:
+                try:
+                    total_size += int(parts[-1])
+                except ValueError:
+                    pass
             match = pattern.match(line)
-            if not match:
-                continue
-            try:
-                status = int(match.group(1))
-                size = int(match.group(2))
-            except ValueError:
-                continue
-            total_size += size
-            if status in status_codes:
-                status_codes[status] += 1
+            if match:
+                try:
+                    status = int(match.group(1))
+                    if status in status_codes:
+                        status_codes[status] += 1
+                except ValueError:
+                    pass
             line_count += 1
             if line_count % 10 == 0:
                 print_stats(total_size, status_codes)
