@@ -19,18 +19,18 @@ def main():
     status_codes = {200: 0, 301: 0, 400: 0, 401: 0,
                     403: 0, 404: 0, 405: 0, 500: 0}
     pattern = re.compile(
-        r'^\d+\.\d+\.\d+\.\d+ - \[.+\] "GET /projects/260 HTTP/1\.1" \d+ \d+$'
+        r'^\d+\.\d+\.\d+\.\d+ - \[.*\] "GET /projects/260 HTTP/1\.1" (\d+) (\d+)$'
     )
 
     try:
         for line in sys.stdin:
             line = line.strip()
-            if not pattern.match(line):
+            match = pattern.match(line)
+            if not match:
                 continue
-            parts = line.split()
             try:
-                status = int(parts[-2])
-                size = int(parts[-1])
+                status = int(match.group(1))
+                size = int(match.group(2))
             except (ValueError, IndexError):
                 continue
             total_size += size
