@@ -5,8 +5,10 @@
 def makeChange(coins, total):
     """Retourne le nombre minimal de pièces pour atteindre total.
 
+    Approche par programmation dynamique (toujours optimale).
+
     Args:
-        coins: liste des valeurs de pièces disponibles (nombre infini de chaque).
+        coins: liste des valeurs de pièces (nombre infini de chaque).
         total: montant à atteindre.
 
     Returns:
@@ -15,16 +17,13 @@ def makeChange(coins, total):
     if total <= 0:
         return 0
 
-    count = 0
-    remaining = total
-    # On commence par les plus grosses pièces (approche gloutonne).
-    for coin in sorted(coins, reverse=True):
-        if remaining == 0:
-            break
-        # Combien de pièces de cette valeur tiennent dans le reste ?
-        count += remaining // coin
-        remaining %= coin
+    # dp[i] = nombre minimal de pièces pour atteindre le montant i.
+    # On initialise à total + 1 (valeur "infinie" impossible à atteindre).
+    dp = [total + 1] * (total + 1)
+    dp[0] = 0
 
-    if remaining != 0:
-        return -1
-    return count
+    for coin in coins:
+        for amount in range(coin, total + 1):
+            dp[amount] = min(dp[amount], dp[amount - coin] + 1)
+
+    return dp[total] if dp[total] != total + 1 else -1
